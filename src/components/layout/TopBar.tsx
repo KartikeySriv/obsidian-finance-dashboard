@@ -22,22 +22,7 @@ const TopBar: React.FC = () => {
           />
         </div>
 
-        <nav className="flex items-center gap-6">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              className={cn(
-                "text-sm font-medium transition-colors relative py-2",
-                tab === 'Dashboard' ? "text-white" : "text-obsidian-text-muted hover:text-white"
-              )}
-            >
-              {tab}
-              {tab === 'Dashboard' && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-obsidian-accent rounded-full" />
-              )}
-            </button>
-          ))}
-        </nav>
+
       </div>
 
       <div className="flex items-center gap-6">
@@ -60,19 +45,6 @@ const TopBar: React.FC = () => {
           >
             Viewer
           </button>
-        </div>
-
-        <div className="flex items-center gap-4 border-l border-obsidian-border pl-6">
-          <button className="text-obsidian-text-muted hover:text-white transition-colors relative">
-            <Bell size={20} />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-obsidian-danger rounded-full border-2 border-obsidian-bg" />
-          </button>
-          <button className="text-obsidian-text-muted hover:text-white transition-colors">
-            <Settings size={20} />
-          </button>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-obsidian-accent to-purple-500 flex items-center justify-center border border-obsidian-border cursor-pointer">
-            <User size={18} className="text-white" />
-          </div>
         </div>
       </div>
     </header>
