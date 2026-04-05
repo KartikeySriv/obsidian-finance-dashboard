@@ -89,10 +89,6 @@ const Sidebar: React.FC = () => {
             <Settings size={20} />
             <span className="font-medium">Settings</span>
           </button>
-          <button className="nav-item w-full">
-            <HelpCircle size={20} />
-            <span className="font-medium">Support</span>
-          </button>
         </div>
       </aside>
     </>
