@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian-bg: #0b0e14;
+  --color-obsidian-card: #141820;
+  --color-obsidian-sidebar: #0f1219;
+  --color-obsidian-accent: #3b82f6;
+  --color-obsidian-success: #10b981;
+  --color-obsidian-danger: #ef4444;
+  --color-obsidian-text-muted: #94a3b8;
+  --color-obsidian-border: #1e293b;
+}
+
+@layer base {
+  body {
+    @apply bg-obsidian-bg text-white font-sans antialiased;
+  }
+}
+
+.glass-card {
+  @apply bg-obsidian-card border border-obsidian-border rounded-xl shadow-lg;
+}
+
+.nav-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-obsidian-text-muted hover:text-white hover:bg-obsidian-border;
+}
+
+.nav-item-active {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-white bg-obsidian-accent/10 border-r-2 border-obsidian-accent;
+}
