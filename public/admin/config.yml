@@ -4,7 +4,7 @@
 backend:
   name: github
   repo: KartikeySriv/obsidian-finance-dashboard
-  branch: test/sveltia-cms
+  branch: main
   auth_methods:
     - token
   skip_ci: true
