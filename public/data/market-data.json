@@ -1,0 +1,110 @@
+{
+  "stocks": [
+    {
+      "name": "Apple Inc.",
+      "symbol": "AAPL",
+      "price": 194,
+      "change": 1.2,
+      "trend": [
+        180,
+        182,
+        185,
+        184,
+        189
+      ]
+    },
+    {
+      "name": "Microsoft Corp.",
+      "symbol": "MSFT",
+      "price": 416.25,
+      "change": -0.5,
+      "trend": [
+        420,
+        418,
+        419,
+        417,
+        415
+      ]
+    },
+    {
+      "name": "Tesla, Inc.",
+      "symbol": "TSLA",
+      "price": 175.22,
+      "change": 4.8,
+      "trend": [
+        160,
+        165,
+        168,
+        172,
+        175
+      ]
+    },
+    {
+      "name": "NVIDIA Corp.",
+      "symbol": "NVDA",
+      "price": 875.28,
+      "change": 2.1,
+      "trend": [
+        850,
+        860,
+        855,
+        870,
+        875
+      ]
+    },
+    {
+      "name": "Amazon.com, Inc.",
+      "symbol": "AMZN",
+      "price": 178.15,
+      "change": -1.2,
+      "trend": [
+        182,
+        180,
+        179,
+        181,
+        178
+      ]
+    }
+  ],
+  "crypto": [
+    {
+      "name": "Bitcoin",
+      "symbol": "BTC",
+      "price": 68420.5,
+      "change": 3.4,
+      "trend": [
+        65000,
+        66000,
+        67500,
+        68000,
+        68420
+      ]
+    },
+    {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "price": 3450.12,
+      "change": -2.1,
+      "trend": [
+        3600,
+        3550,
+        3500,
+        3480,
+        3450
+      ]
+    },
+    {
+      "name": "Solana",
+      "symbol": "SOL",
+      "price": 145.8,
+      "change": 12.4,
+      "trend": [
+        120,
+        130,
+        135,
+        140,
+        145
+      ]
+    }
+  ]
+}
