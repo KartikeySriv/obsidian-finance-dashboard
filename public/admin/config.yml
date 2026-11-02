@@ -46,3 +46,77 @@ collections:
       - name: body
         label: Content
         widget: markdown
+
+  - name: market_data
+    label: Market Data
+    files:
+      - name: market_data
+        label: Market Data
+        file: public/data/market-data.json
+        format: json
+        fields:
+          - name: stocks
+            label: Top Equities
+            label_singular: Equity
+            widget: list
+            summary: '{{symbol}} — {{name}}'
+            fields:
+              - name: name
+                label: Name
+                widget: string
+
+              - name: symbol
+                label: Symbol
+                widget: string
+
+              - name: price
+                label: Price
+                widget: number
+                value_type: float
+
+              - name: change
+                label: Change (%)
+                widget: number
+                value_type: float
+
+              - name: trend
+                label: Trend
+                widget: list
+                field:
+                  name: value
+                  label: Value
+                  widget: number
+                  value_type: float
+
+          - name: crypto
+            label: Digital Assets
+            label_singular: Digital Asset
+            widget: list
+            summary: '{{symbol}} — {{name}}'
+            fields:
+              - name: name
+                label: Name
+                widget: string
+
+              - name: symbol
+                label: Symbol
+                widget: string
+
+              - name: price
+                label: Price
+                widget: number
+                value_type: float
+
+              - name: change
+                label: Change (%)
+                widget: number
+                value_type: float
+
+              - name: trend
+                label: Trend
+                widget: list
+                field:
+                  name: value
+                  label: Value
+                  widget: number
+                  value_type: float

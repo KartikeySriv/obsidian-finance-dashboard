@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TrendingUp, Search, Filter, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { formatCurrency, cn } from '../lib/utils';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
@@ -9,7 +9,37 @@ interface MarketItem {
   price: number;
   change: number;
   trend: number[];
-  color: string;
+}
+
+interface MarketData {
+  stocks: MarketItem[];
+  crypto: MarketItem[];
+}
+
+function isValidMarketItem(item: unknown): item is MarketItem {
+  if (!item || typeof item !== 'object') return false;
+  const candidate = item as Record<string, unknown>;
+  return (
+    typeof candidate.name === 'string' &&
+    typeof candidate.symbol === 'string' &&
+    typeof candidate.price === 'number' &&
+    Number.isFinite(candidate.price) &&
+    typeof candidate.change === 'number' &&
+    Number.isFinite(candidate.change) &&
+    Array.isArray(candidate.trend) &&
+    candidate.trend.every((v) => typeof v === 'number' && Number.isFinite(v))
+  );
+}
+
+function isValidMarketData(data: unknown): data is MarketData {
+  if (!data || typeof data !== 'object') return false;
+  const candidate = data as Record<string, unknown>;
+  return (
+    Array.isArray(candidate.stocks) &&
+    Array.isArray(candidate.crypto) &&
+    candidate.stocks.every(isValidMarketItem) &&
+    candidate.crypto.every(isValidMarketItem)
+  );
 }
 
 const MarketCard: React.FC<{ item: MarketItem }> = ({ item }) => (
@@ -56,19 +86,87 @@ const MarketCard: React.FC<{ item: MarketItem }> = ({ item }) => (
 );
 
 const Markets: React.FC = () => {
-  const stocks: MarketItem[] = [
-    { name: 'Apple Inc.', symbol: 'AAPL', price: 189.43, change: 1.2, trend: [180, 182, 185, 184, 189], color: 'text-green-400' },
-    { name: 'Microsoft Corp.', symbol: 'MSFT', price: 415.10, change: -0.5, trend: [420, 418, 419, 417, 415], color: 'text-red-400' },
-    { name: 'Tesla, Inc.', symbol: 'TSLA', price: 175.22, change: 4.8, trend: [160, 165, 168, 172, 175], color: 'text-green-400' },
-    { name: 'NVIDIA Corp.', symbol: 'NVDA', price: 875.28, change: 2.1, trend: [850, 860, 855, 870, 875], color: 'text-green-400' },
-    { name: 'Amazon.com, Inc.', symbol: 'AMZN', price: 178.15, change: -1.2, trend: [182, 180, 179, 181, 178], color: 'text-red-400' },
-  ];
+  const [stocks, setStocks] = useState<MarketItem[]>([]);
+  const [crypto, setCrypto] = useState<MarketItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const crypto: MarketItem[] = [
-    { name: 'Bitcoin', symbol: 'BTC', price: 68420.50, change: 3.4, trend: [65000, 66000, 67500, 68000, 68420], color: 'text-orange-400' },
-    { name: 'Ethereum', symbol: 'ETH', price: 3450.12, change: -2.1, trend: [3600, 3550, 3500, 3480, 3450], color: 'text-blue-400' },
-    { name: 'Solana', symbol: 'SOL', price: 145.80, change: 12.4, trend: [120, 130, 135, 140, 145], color: 'text-purple-400' },
-  ];
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadMarketData() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const base = import.meta.env.BASE_URL.endsWith('/')
+          ? import.meta.env.BASE_URL
+          : `${import.meta.env.BASE_URL}/`;
+        const url = `${base}data/market-data.json`;
+        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+
+        if (!response.ok) {
+          throw new Error(`Failed to load market data (${response.status})`);
+        }
+
+        const json: unknown = await response.json();
+
+        if (!isValidMarketData(json)) {
+          throw new Error('Market data file is missing valid stocks or crypto arrays');
+        }
+
+        setStocks(json.stocks);
+        setCrypto(json.crypto);
+      } catch (err) {
+        if (controller.signal.aborted) return;
+        const message = err instanceof Error ? err.message : 'Failed to load market data';
+        setError(message);
+        setStocks([]);
+        setCrypto([]);
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadMarketData();
+
+    return () => controller.abort();
+  }, [retryCount]);
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold">Market Intelligence</h2>
+          <p className="text-sm text-obsidian-text-muted">Loading market data…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold">Market Intelligence</h2>
+          <p className="text-sm text-obsidian-text-muted">Unable to load CMS market data.</p>
+        </div>
+        <div className="glass-card p-6 space-y-4">
+          <p className="text-sm text-red-400">{error}</p>
+          <button
+            type="button"
+            onClick={() => setRetryCount((count) => count + 1)}
+            className="bg-obsidian-card border border-obsidian-border rounded-lg px-4 py-2 text-xs font-semibold text-obsidian-text-muted hover:text-white transition-all"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
