@@ -1,0 +1,8 @@
+---
+title: Understanding Compound Interest - Updated
+date: 2026-11-02
+category: Personal Finance
+summary: Learn how compound interest helps investments grow.
+---
+
+Write a short article about compound interest.

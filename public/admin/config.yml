@@ -1,0 +1,48 @@
+
+# Sveltia CMS configuration
+
+backend:
+  name: github
+  repo: KartikeySriv/obsidian-finance-dashboard
+  branch: test/sveltia-cms
+  auth_methods:
+    - token
+  skip_ci: true
+
+# Media storage inside the GitHub repository
+media_folder: public/uploads
+public_folder: /uploads
+
+# CMS collections
+collections:
+  - name: insights
+    label: Finance Insights
+    label_singular: Finance Insight
+    folder: content/insights
+    create: true
+
+    fields:
+      - name: title
+        label: Title
+        widget: string
+
+      - name: date
+        label: Published Date
+        widget: datetime
+        type: date
+
+      - name: category
+        label: Category
+        widget: select
+        options:
+          - Markets
+          - Personal Finance
+          - Technology
+
+      - name: summary
+        label: Summary
+        widget: text
+
+      - name: body
+        label: Content
+        widget: markdown
